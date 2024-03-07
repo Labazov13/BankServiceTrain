@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<tr th:each="client: ${clients}" >
+    <td th:text="${client.firstName}" ></td><br />
+    <td th:text="${client.lastName}" ></td><br />
+    <td th:text="${client.fatherName}"></td><br />
+    <td th:text="${client.phone}"></td><br />
+    <td th:text="${client.email}"></td><br />
+    <td th:text="${client.birthDay}"></td><br /><br /><br />
+</tr>
+
+<form action="/" method="post">
+    Enter email: <input type="text" name="email" /><br />
+    <button type="submit">Log in</button>
+</form>
+<p th:text="${message}"></p>
+<a href="/register">Register</a>
+<!--<p th:text="${message}"></p>-->
+</body>
+</html>

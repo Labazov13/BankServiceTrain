@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List client</title>
+</head>
+<body>
+<h1>Clients</h1>
+<h2>View client</h2>
+<table>
+    <tr>
+        <th>Client firstName</th>
+        <th>Client lastName</th>
+        <th>Client fatherName</th>
+        <th>Client phone</th>
+        <th>Client email</th>
+    </tr>
+
+    <tr th:each="client: ${clients}" >
+        <td th:text="${client.firstName}" ></td>
+        <td th:text="${client.lastName}" ></td>
+        <td th:text="${client.fatherName}"></td>
+        <td th:text="${client.phone}"></td>
+        <td th:text="${client.email}"></td>
+    </tr>
+</table>
+<h2>Become a client!</h2>
+<form action="/home" method="POST">
+    Firstname: <input
+        type="text"
+        name="firstName"><br />
+    Lastname: <input
+        type="text"
+        name="lastName"><br />
+    Fathername: <input
+        type="text"
+        name="fatherName"><br />
+    Phone: <input
+        type="text"
+        name="phone"><br />
+    Email: <input
+        type="text"
+        name="email"><br />
+
+    <button type="submit">Become a client</button>
+</form>
+<!--<h2>Delete person</h2>
+<form action="/deletePerson" method="post">
+    Index: <input
+        type="number"
+        name="index"><br />
+    <button type="submit">Delete person</button>
+</form>-->
+</body>
+</html>

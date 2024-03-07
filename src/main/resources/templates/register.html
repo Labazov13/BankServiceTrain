@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New client</title>
+</head>
+<body>
+
+<h2>Become a client!</h2>
+<form action="/register" method="post">
+    Firstname: <input
+        type="text"
+        name="firstName"><br />
+    Lastname: <input
+        type="text"
+        name="lastName"><br />
+    Fathername: <input
+        type="text"
+        name="fatherName"><br />
+    Phone: <input
+        type="text"
+        name="phone"><br />
+    Email: <input
+        type="text"
+        name="email"><br />
+    Birthday: <input
+        type="date"
+        name="birthDay"><br />
+
+    <button type="submit">Become a client</button>
+</form>
+<p th:text="${message}"></p>
+</body>
+</html>

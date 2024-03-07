@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Page client</title>
+</head>
+<body>
+<h1>Hi, <span th:text="${email}"></span></h1>
+
+<h1>Your Account:</h1>
+<h4>Name: <p th:text="${firstName}">Name</p></h4>
+<h4>Lastname: <p th:text="${lastName}">Lastname</p></h4>
+<h4>ID account: <p th:text="${id}">ID account</p></h4>
+<h4>Balance: <p th:text="${balance}">Balance</p></h4>
+<h2>Account actions:</h2>
+    <a href="/edit">Edit profile</a><br/><br/>
+    <a href="/withdraw">Withdraw</a><br/><br/>
+    <a href="/transfer">Transfer</a><br/>
+<a href="/?Logout">Logout</a><br/>
+<p th:text="${message}"></p>
+</body>
+</html>
+
+<!--<table>
+    <tr>
+        <th>Client firstName</th>
+        <th>Client lastName</th>
+        <th>Client fatherName</th>
+        <th>Client phone</th>
+        <th>Client email</th>
+    </tr>
+
+    <tr th:each="client: ${clients}" >
+        <td th:text="${client.firstName}" ></td>
+        <td th:text="${client.lastName}" ></td>
+        <td th:text="${client.fatherName}"></td>
+        <td th:text="${client.phone}"></td>
+        <td th:text="${client.email}"></td>
+    </tr>
+</table>-->
+
+<!--<h2>Delete person</h2>
+<form action="/deletePerson" method="post">
+    Index: <input
+        type="number"
+        name="index"><br />
+    <button type="submit">Delete person</button>
+</form>-->

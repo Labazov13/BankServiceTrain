@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Page client</title>
+</head>
+<body>
+<h1>Transfer from account <span th:text="${email}"></span></h1>
+
+<h1>Your balance: <p th:text="${balance}">Balance</p></h1>
+
+<h2>Enter the amount to transfer:</h2>
+<form action="/transfer" method="post">
+    Amount: <input
+        type="number"
+        name="amount"><br />
+    To account: <input
+        type="text"
+        name="toEmail"><br />
+    <button type="submit">Transfer</button>
+</form>
+<p th:text="${message}"></p>
+</body>
+</html>
+
+<!--<table>
+    <tr>
+        <th>Client firstName</th>
+        <th>Client lastName</th>
+        <th>Client fatherName</th>
+        <th>Client phone</th>
+        <th>Client email</th>
+    </tr>
+
+    <tr th:each="client: ${clients}" >
+        <td th:text="${client.firstName}" ></td>
+        <td th:text="${client.lastName}" ></td>
+        <td th:text="${client.fatherName}"></td>
+        <td th:text="${client.phone}"></td>
+        <td th:text="${client.email}"></td>
+    </tr>
+</table>-->
+
+<!--<h2>Delete person</h2>
+<form action="/deletePerson" method="post">
+    Index: <input
+        type="number"
+        name="index"><br />
+    <button type="submit">Delete person</button>
+</form>-->
