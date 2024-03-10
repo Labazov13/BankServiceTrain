@@ -1,26 +1,29 @@
 package com.example.BankService.processors;
 
-import com.example.BankService.model.Client;
-import com.example.BankService.service.ClientService;
+import com.example.BankService.dao.ClientDAOImpl;
+import com.example.BankService.entity.ClientDetails;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 @Component
 @Data
 public class BankProcessor {
-    private ClientService clientService;
+    private ClientDAOImpl clientDAOImpl;
 
-    public BankProcessor(ClientService clientService) {
-        this.clientService = clientService;
+    public BankProcessor(ClientDAOImpl clientDAOImpl) {
+        this.clientDAOImpl = clientDAOImpl;
     }
 
     public boolean withdraw(String email, float amount){
-        var clients = clientService.findAll();
-        for (Client client : clients){
-            if (client.getEmail().equals(email)){
-                if (client.getBankAccount().getAccountBalance() >= amount){
-                    client.getBankAccount().setAccountBalance(client.getBankAccount().getAccountBalance() - amount);
-                    client.getBankAccount().setInitialBalance(client.getBankAccount().getInitialBalance() - amount);
+        var clients = clientDAOImpl.getAllClientDetails();
+        for (ClientDetails client : clients){
+            if (client.getClient().getEmail().equals(email)){
+                if (client.getClient().getBankAccount().getAccountBalance() >= amount){
+                    client.getClient().getBankAccount()
+                            .setAccountBalance(client.getClient().getBankAccount().getAccountBalance() - amount);
+                    client.getClient().getBankAccount()
+                            .setInitialBalance(client.getClient().getBankAccount().getInitialBalance() - amount);
+                    clientDAOImpl.updateClient(client);
                 }
                 return true;
             }
@@ -29,13 +32,15 @@ public class BankProcessor {
     }
 
     public boolean transfer(String fromEmail, String toEmail, float amount){
-        Client fromClient = clientService.findByEmail(fromEmail);
-        Client toClient = clientService.findByEmail(toEmail);
-        float fromBalance = fromClient.getBankAccount().getAccountBalance();
-        float toBalance = toClient.getBankAccount().getAccountBalance();
+        ClientDetails fromClient = clientDAOImpl.getClientDetailsByEmail(fromEmail);
+        ClientDetails toClient = clientDAOImpl.getClientDetailsByEmail(toEmail);
+        float fromBalance = fromClient.getClient().getBankAccount().getAccountBalance();
+        float toBalance = toClient.getClient().getBankAccount().getAccountBalance();
         if (fromBalance >= amount){
-            fromClient.getBankAccount().setAccountBalance(fromBalance - amount);
-            toClient.getBankAccount().setAccountBalance(toBalance + amount);
+            fromClient.getClient().getBankAccount().setAccountBalance(fromBalance - amount);
+            toClient.getClient().getBankAccount().setAccountBalance(toBalance + amount);
+            clientDAOImpl.updateClient(fromClient);
+            clientDAOImpl.updateClient(toClient);
             return true;
         }
         return false;

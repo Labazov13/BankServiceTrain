@@ -20,50 +20,6 @@
         name="email"><br />
     <button type="submit">Save</button>
 </form>
-
-
-<!--<table>
-    <tr>
-        <th>Client name</th>
-        <th>Client lastname</th>
-        <th>ID account</th>
-        <th>Client balance</th>
-    </tr>
-
-    <tr th:each="client: ${clients}" >
-        <td th:text="${client.firstName}" ></td>
-        <td th:text="${client.lastName}" ></td>
-        <td th:text="${bankAccount.id}"></td>
-        <td th:text="${bankAccount.accountBalance}"></td>
-    </tr>
-</table>-->
-
-
+<p th:text="${message}"></p>
 </body>
 </html>
-
-<!--<table>
-    <tr>
-        <th>Client firstName</th>
-        <th>Client lastName</th>
-        <th>Client fatherName</th>
-        <th>Client phone</th>
-        <th>Client email</th>
-    </tr>
-
-    <tr th:each="client: ${clients}" >
-        <td th:text="${client.firstName}" ></td>
-        <td th:text="${client.lastName}" ></td>
-        <td th:text="${client.fatherName}"></td>
-        <td th:text="${client.phone}"></td>
-        <td th:text="${client.email}"></td>
-    </tr>
-</table>-->
-
-<!--<h2>Delete person</h2>
-<form action="/deletePerson" method="post">
-    Index: <input
-        type="number"
-        name="index"><br />
-    <button type="submit">Delete person</button>
-</form>-->

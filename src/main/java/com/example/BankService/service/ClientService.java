@@ -1,17 +1,12 @@
 package com.example.BankService.service;
 
-import com.example.BankService.model.BankAccount;
 import com.example.BankService.model.Client;
-import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service

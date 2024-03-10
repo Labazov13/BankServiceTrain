@@ -1,35 +1,34 @@
 package com.example.BankService.processors;
 
-import com.example.BankService.model.Client;
-import com.example.BankService.service.ClientService;
+import com.example.BankService.dao.ClientDAOImpl;
+import com.example.BankService.entity.ClientDetails;
 import com.example.BankService.service.LoginManagerService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
-import org.springframework.web.context.annotation.SessionScope;
 
 @Component
 @RequestScope
 @Data
 public class LoginProcessor {
-    private ClientService clientService;
+    private ClientDAOImpl clientDAOImpl;
     private LoginManagerService loginManagerService;
     private String email;
     @Autowired
-    public LoginProcessor(ClientService clientService, LoginManagerService loginManagerService) {
-        this.clientService = clientService;
+    public LoginProcessor(LoginManagerService loginManagerService, ClientDAOImpl clientDAOImpl) {
         this.loginManagerService = loginManagerService;
+        this.clientDAOImpl = clientDAOImpl;
     }
 
     public boolean login(){
-        var clients = clientService.findAll();
+        var clients = clientDAOImpl.getAllClientDetails();
         boolean isLogged = false;
-        for (Client client : clients){
-            if (email.equals(client.getEmail())){
+        for (ClientDetails client : clients){
+            if (email.equals(client.getClient().getEmail())){
                 isLogged = true;
                 loginManagerService.setEmail(email);
-                loginManagerService.setID(client.getBankAccount().getId());
+                loginManagerService.setID(client.getID());
             }
         }
         return isLogged;

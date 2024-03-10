@@ -1,27 +1,26 @@
 package com.example.BankService.controller;
 
-import com.example.BankService.model.Client;
+import com.example.BankService.dao.ClientDAOImpl;
+import com.example.BankService.entity.ClientDetails;
 import com.example.BankService.processors.EditProcessor;
-import com.example.BankService.service.ClientService;
 import com.example.BankService.service.LoginManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class EditController {
-    private LoginManagerService loginManagerService;
-    private EditProcessor editProcessor;
-    private ClientService clientService;
+    private final LoginManagerService loginManagerService;
+    private final EditProcessor editProcessor;
+    private final ClientDAOImpl clientDAOImpl;
     @Autowired
-    public EditController(LoginManagerService loginManagerService, EditProcessor editProcessor, ClientService clientService) {
+    public EditController(LoginManagerService loginManagerService, EditProcessor editProcessor, ClientDAOImpl clientDAOImpl) {
         this.loginManagerService = loginManagerService;
         this.editProcessor = editProcessor;
-        this.clientService = clientService;
+        this.clientDAOImpl = clientDAOImpl;
     }
 
     @GetMapping("/edit")
@@ -30,21 +29,29 @@ public class EditController {
         if(ID == 0){
             return "redirect:/";
         }
-        Client client = clientService.findByID(ID);
-        model.addAttribute("email", client.getEmail());
-        model.addAttribute("phone", client.getPhone());
+        ClientDetails client = clientDAOImpl.getClientDetailsById(ID);
+        model.addAttribute("email", client.getClient().getEmail());
+        model.addAttribute("phone", client.getClient().getPhone());
         return "edit.html";
     }
 
     @PostMapping("/edit")
-    public String editClient(@RequestParam String phone, @RequestParam String email, Model model){
+    public String editClient(@RequestParam(required = false) String phone, @RequestParam(required = false) String email, Model model){
         if(loginManagerService.getID() == 0){
             return "redirect:/";
         }
         String userEmail = loginManagerService.getEmail();
-        Client client = editProcessor.getClient(userEmail);
-        editProcessor.editUser(client, phone, email);
-        loginManagerService.setEmail(email);
-        return "redirect:/home";
+        ClientDetails client = editProcessor.getClient(userEmail);
+        boolean isEdit = editProcessor.editUser(client, phone, email);
+        if (isEdit){
+            return "redirect:/home";
+        }
+        else {
+            model.addAttribute("email", userEmail);
+            model.addAttribute("phone", client.getClient().getPhone());
+            model.addAttribute("message", "This email is already registered in the system");
+            return "edit.html";
+        }
+
     }
 }

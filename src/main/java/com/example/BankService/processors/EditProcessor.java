@@ -1,7 +1,7 @@
 package com.example.BankService.processors;
 
-import com.example.BankService.model.Client;
-import com.example.BankService.service.ClientService;
+import com.example.BankService.dao.ClientDAOImpl;
+import com.example.BankService.entity.ClientDetails;
 import com.example.BankService.service.LoginManagerService;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -12,24 +12,37 @@ import org.springframework.web.context.annotation.RequestScope;
 @RequestScope
 public class EditProcessor {
     private LoginManagerService loginManagerService;
-    private ClientService clientService;
+    private ClientDAOImpl clientDAOImpl;
 
-    public EditProcessor(LoginManagerService loginManagerService, ClientService clientService) {
+    public EditProcessor(LoginManagerService loginManagerService, ClientDAOImpl clientDAOImpl) {
         this.loginManagerService = loginManagerService;
-        this.clientService = clientService;
+        this.clientDAOImpl = clientDAOImpl;
     }
 
-    public Client getClient(String userEmail){
-        var clients = clientService.findAll();
-        for (Client client : clients){
-            if (client.getEmail().equals(userEmail)){
+    public ClientDetails getClient(String userEmail){
+        var clients = clientDAOImpl.getAllClientDetails();
+        for (ClientDetails client : clients){
+            if (client.getClient().getEmail().equals(userEmail)){
                 return client;
             }
         }
         return null;
     }
-    public void editUser(Client client, String phone, String email){
-        client.setPhone(phone);
-        client.setEmail(email);
+    public boolean editUser(ClientDetails client, String phone, String email){
+        var clients = clientDAOImpl.getAllClientDetails();
+        if (phone == null){
+            client.getClient().setPhone(client.getClient().getPhone());
+        }
+        if (email == null){
+            client.getClient().setEmail(client.getClient().getEmail());
+        }
+        for (ClientDetails clientDetails : clients){
+            if (clientDetails.getClient().getPhone().equals(phone) || clientDetails.getClient().getEmail().equals(email)){
+                return false;
+            }
+        }
+        clientDAOImpl.updateClient(client);
+        loginManagerService.setEmail(email);
+        return true;
     }
 }

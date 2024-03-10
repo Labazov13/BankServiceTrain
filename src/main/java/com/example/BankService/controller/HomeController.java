@@ -1,26 +1,22 @@
 package com.example.BankService.controller;
 
-import com.example.BankService.model.Client;
-import com.example.BankService.processors.HomeProcessor;
-import com.example.BankService.processors.LoginProcessor;
-import com.example.BankService.service.ClientService;
+import com.example.BankService.dao.ClientDAOImpl;
+import com.example.BankService.entity.ClientDetails;
 import com.example.BankService.service.LoginManagerService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HomeController {
     private final LoginManagerService loginManagerService;
-    private ClientService clientService;
+    private final ClientDAOImpl clientDAOImpl;
     @Autowired
-    public HomeController(LoginManagerService loginManagerService, ClientService clientService) {
+    public HomeController(LoginManagerService loginManagerService, ClientDAOImpl clientDAOImpl) {
         this.loginManagerService = loginManagerService;
-        this.clientService = clientService;
+        this.clientDAOImpl = clientDAOImpl;
     }
 
     @GetMapping("/home")
@@ -31,12 +27,13 @@ public class HomeController {
         if (Logout != null){
             loginManagerService.setEmail(null);
         }
+        long ID = loginManagerService.getID();
         String email = loginManagerService.getEmail();
-        Client searchClient = clientService.findByEmail(email);
-        String firstName = searchClient.getFirstName();
-        String lastName = searchClient.getLastName();
-        String id = String.valueOf(searchClient.getBankAccount().getId());
-        String balance = String.valueOf(searchClient.getBankAccount().getAccountBalance());
+        ClientDetails searchClient = clientDAOImpl.getClientDetailsById(ID);
+        String firstName = searchClient.getClient().getFirstName();
+        String lastName = searchClient.getClient().getLastName();
+        String id = String.valueOf(searchClient.getClient().getBankAccount().getId());
+        String balance = String.valueOf(searchClient.getClient().getBankAccount().getAccountBalance());
         model.addAttribute("email", email);
         model.addAttribute("firstName", firstName);
         model.addAttribute("lastName", lastName);

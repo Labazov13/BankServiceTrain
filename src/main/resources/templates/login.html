@@ -6,12 +6,12 @@
 </head>
 <body>
 <tr th:each="client: ${clients}" >
-    <td th:text="${client.firstName}" ></td><br />
-    <td th:text="${client.lastName}" ></td><br />
-    <td th:text="${client.fatherName}"></td><br />
-    <td th:text="${client.phone}"></td><br />
-    <td th:text="${client.email}"></td><br />
-    <td th:text="${client.birthDay}"></td><br /><br /><br />
+    <td th:text="${client.client.firstName}" ></td><br />
+    <td th:text="${client.client.lastName}" ></td><br />
+    <td th:text="${client.client.fatherName}"></td><br />
+    <td th:text="${client.client.phone}"></td><br />
+    <td th:text="${client.client.email}"></td><br />
+    <td th:text="${client.client.birthDay}"></td><br /><br /><br />
 </tr>
 
 <form action="/" method="post">
@@ -20,6 +20,5 @@
 </form>
 <p th:text="${message}"></p>
 <a href="/register">Register</a>
-<!--<p th:text="${message}"></p>-->
 </body>
 </html>

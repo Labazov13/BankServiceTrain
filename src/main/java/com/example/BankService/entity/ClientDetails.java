@@ -1,25 +1,24 @@
 package com.example.BankService.entity;
 
-import com.example.BankService.model.BankAccount;
 import com.example.BankService.model.Client;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "clients_details")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ClientDetails {
     @Id
     @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
+    @Embedded
     private Client client;
-    private BankAccount bankAccount;
 
-    public ClientDetails(Client client, BankAccount bankAccount) {
-        this.client = client;
-        this.bankAccount = bankAccount;
-    }
-
-    public ClientDetails() {
-    }
 }

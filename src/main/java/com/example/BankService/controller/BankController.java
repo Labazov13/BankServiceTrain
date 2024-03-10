@@ -1,8 +1,8 @@
 package com.example.BankService.controller;
 
-import com.example.BankService.model.Client;
+import com.example.BankService.dao.ClientDAOImpl;
+import com.example.BankService.entity.ClientDetails;
 import com.example.BankService.processors.BankProcessor;
-import com.example.BankService.service.ClientService;
 import com.example.BankService.service.LoginManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class BankController {
-    private LoginManagerService loginManagerService;
-    private BankProcessor bankProcessor;
-    private ClientService clientService;
+    private final LoginManagerService loginManagerService;
+    private final BankProcessor bankProcessor;
+    private final ClientDAOImpl clientDAOImpl;
     @Autowired
-    public BankController(LoginManagerService loginManagerService, BankProcessor bankProcessor, ClientService clientService) {
+    public BankController(LoginManagerService loginManagerService, BankProcessor bankProcessor, ClientDAOImpl clientDAOImpl) {
         this.loginManagerService = loginManagerService;
         this.bankProcessor = bankProcessor;
-        this.clientService = clientService;
+        this.clientDAOImpl = clientDAOImpl;
     }
 
     @GetMapping("/withdraw")
@@ -59,9 +59,9 @@ public class BankController {
         if(loginManagerService.getID() == 0){
             return "redirect:/";
         }
-        Client client = clientService.findByEmail(email);
+        ClientDetails client = clientDAOImpl.getClientDetailsById(ID);
         model.addAttribute("email", email);
-        model.addAttribute("balance", client.getBankAccount().getAccountBalance());
+        model.addAttribute("balance", client.getClient().getBankAccount().getAccountBalance());
         return "transfer.html";
     }
     @PostMapping("/transfer")
@@ -70,20 +70,20 @@ public class BankController {
                                Model model){
         String fromEmail = loginManagerService.getEmail();
         long ID = loginManagerService.getID();
-        if(loginManagerService.getID() == 0){
+        if(ID == 0){
             return "redirect:/";
         }
-        Client fromClient = clientService.findByEmail(fromEmail);
-        Client toClient = clientService.findByEmail(toEmail);
+        ClientDetails fromClient = clientDAOImpl.getClientDetailsById(ID);
+        ClientDetails toClient = clientDAOImpl.getClientDetailsByEmail(toEmail);
         if(toClient == null){
             model.addAttribute("email", fromEmail);
-            model.addAttribute("balance", fromClient.getBankAccount().getAccountBalance());
+            model.addAttribute("balance", fromClient.getClient().getBankAccount().getAccountBalance());
             model.addAttribute("message", "This client does not exist");
             return "transfer.html";
         }
         if (toEmail.equals(fromEmail)){
             model.addAttribute("email", fromEmail);
-            model.addAttribute("balance", fromClient.getBankAccount().getAccountBalance());
+            model.addAttribute("balance", fromClient.getClient().getBankAccount().getAccountBalance());
             model.addAttribute("message", "It is impossible to transfer money to yourself");
             return "transfer.html";
         }
@@ -94,7 +94,7 @@ public class BankController {
             }
             else {
                 model.addAttribute("email", fromEmail);
-                model.addAttribute("balance", fromClient.getBankAccount().getAccountBalance());
+                model.addAttribute("balance", fromClient.getClient().getBankAccount().getAccountBalance());
                 model.addAttribute("message", "Insufficient funds");
                 return "transfer.html";
             }
