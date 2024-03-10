@@ -33,7 +33,7 @@ public class BankAccountService {
         return bankAccounts;
     }
 
-    @Scheduled(initialDelay = 10000, fixedDelay = 10000)
+    @Scheduled(initialDelay = 60000, fixedDelay = 60000)
     public void accrualPercent() throws InterruptedException {
         List<ClientDetails> clientDetails = clientDAOImpl.getAllClientDetails();
         for (ClientDetails client : clientDetails){
