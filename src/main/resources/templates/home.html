@@ -9,6 +9,7 @@
 
 <h1>Your Account:</h1>
 <h4>Name: <p th:text="${firstName}">Name</p></h4>
+<h4>Username: <p th:text="${username}">Name</p></h4>
 <h4>Lastname: <p th:text="${lastName}">Lastname</p></h4>
 <h4>ID account: <p th:text="${id}">ID account</p></h4>
 <h4>Balance: <p th:text="${balance}">Balance</p></h4>
@@ -16,7 +17,8 @@
     <a href="/edit">Edit profile</a><br/><br/>
     <a href="/withdraw">Withdraw</a><br/><br/>
     <a href="/transfer">Transfer</a><br/>
-<a href="/?Logout">Logout</a><br/>
-<p th:text="${message}"></p>
+<form method="POST" th:action="@{/logout}">
+    <input type="submit" value="Logout"/>
+</form>
 </body>
 </html>

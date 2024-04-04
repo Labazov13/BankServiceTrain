@@ -11,23 +11,12 @@ import org.springframework.web.context.annotation.RequestScope;
 @Data
 @RequestScope
 public class EditProcessor {
-    private LoginManagerService loginManagerService;
     private ClientDAOImpl clientDAOImpl;
 
-    public EditProcessor(LoginManagerService loginManagerService, ClientDAOImpl clientDAOImpl) {
-        this.loginManagerService = loginManagerService;
+    public EditProcessor(ClientDAOImpl clientDAOImpl) {
         this.clientDAOImpl = clientDAOImpl;
     }
 
-    public ClientDetails getClient(String userEmail){
-        var clients = clientDAOImpl.getAllClientDetails();
-        for (ClientDetails client : clients){
-            if (client.getClient().getEmail().equals(userEmail)){
-                return client;
-            }
-        }
-        return null;
-    }
     public boolean editUser(ClientDetails client, String phone, String email){
         var clients = clientDAOImpl.getAllClientDetails();
         if (phone == null){
@@ -41,8 +30,9 @@ public class EditProcessor {
                 return false;
             }
         }
+        client.getClient().setPhone(phone);
+        client.getClient().setEmail(email);
         clientDAOImpl.updateClient(client);
-        loginManagerService.setEmail(email);
         return true;
     }
 }

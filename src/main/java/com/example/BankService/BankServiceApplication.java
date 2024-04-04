@@ -10,5 +10,4 @@ public class BankServiceApplication {
 		System.setProperty("javax.xml.bind.context.factory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
 		SpringApplication.run(BankServiceApplication.class, args);
 	}
-
 }

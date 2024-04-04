@@ -3,60 +3,62 @@ package com.example.BankService.dao;
 import com.example.BankService.entity.ClientDetails;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
+import org.hibernate.type.StringType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
+
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
 public class ClientDAOImpl implements ClientDAO{
-    @PersistenceContext
-    private EntityManager entityManager;
+    @Autowired
+    private final SessionFactory sessionFactory;
 
-    public Session getSession(){
-        Configuration configuration = new Configuration();
-        configuration.addAnnotatedClass(ClientDetails.class);
-        configuration.configure("hibernate.cfg.xml");
-        SessionFactory sessionFactory = configuration.buildSessionFactory();
-        return sessionFactory.openSession();
+    public ClientDAOImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     @Transactional
-    public void addClient(ClientDetails clientDetails) {
-        Session session = getSession();
-        session.beginTransaction();
+    public void addClientDetails(ClientDetails clientDetails) {
+        Session session = sessionFactory.openSession();
         session.save(clientDetails);
         session.close();
     }
 
     @Override
     @Transactional
-    public void updateClient(ClientDetails clientDetails) {
-        Session session = getSession();
-        session.beginTransaction();
-        session.update(clientDetails);
-        session.getTransaction().commit();
+    public ClientDetails findByUsername(String username) {
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("FROM ClientDetails WHERE username=:username");
+        query.setParameter("username", username, StringType.INSTANCE);
+        ClientDetails clientDetails = (ClientDetails) query.uniqueResult();
+        return clientDetails;
     }
 
     @Override
     @Transactional
-    public void deleteClient(ClientDetails clientDetails) {
-        Session session = getSession();
+    public void updateClient(ClientDetails clientDetails) {
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.delete(clientDetails);
+        session.update(clientDetails);
+        session.getTransaction().commit();
         session.close();
     }
 
     @Override
     @Transactional
+    public void deleteClient(ClientDetails clientDetails) {
+        Session session = sessionFactory.openSession();
+        session.delete(clientDetails);
+    }
+
+    @Override
+    @Transactional
     public ClientDetails getClientDetailsById(long id) {
-        Session session = getSession();
-        session.beginTransaction();
+        Session session = sessionFactory.openSession();
         return session.get(ClientDetails.class, id);
     }
 
@@ -73,11 +75,8 @@ public class ClientDAOImpl implements ClientDAO{
     @Override
     @Transactional
     public List<ClientDetails> getAllClientDetails() {
-        Session session = getSession();
-        session.beginTransaction();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<ClientDetails> criteria = builder.createQuery(ClientDetails.class);
-        criteria.from(ClientDetails.class);
-        return session.createQuery(criteria).getResultList();
+        Session session = sessionFactory.openSession();
+        List<ClientDetails> clientDetailsList = session.createQuery("from ClientDetails").getResultList();
+        return clientDetailsList;
     }
 }

@@ -7,25 +7,31 @@
 <body>
 
 <h2>Become a client!</h2>
-<form action="/register" method="post">
-    Firstname: <input
-        type="text"
-        name="firstName"><br />
-    Lastname: <input
-        type="text"
-        name="lastName"><br />
-    Fathername: <input
-        type="text"
-        name="fatherName"><br />
-    Phone: <input
-        type="text"
-        name="phone"><br />
-    Email: <input
-        type="text"
-        name="email"><br />
-    Birthday: <input
-        type="date"
-        name="birthDay"><br />
+<form th:action="@{/register}" th:method="post" th:object="${client}">
+
+    <label for="firstName">Firstname:</label>
+    <input type="text" th:field="*{firstName}" id="firstName"><br/><br/>
+
+    <label for="lastName">Lastname:</label>
+    <input type="text" th:field="*{lastName}" id="lastName"><br/><br/>
+
+    <label for="fatherName">Fathername:</label>
+    <input type="text" th:field="*{fatherName}" id="fatherName"><br/><br/>
+
+    <label for="phone">Phone:</label>
+    <input type="text" th:field="*{phone}" id="phone"><br/><br/>
+
+    <label for="email">Email:</label>
+    <input type="text" th:field="*{email}" id="email"><br/><br/>
+
+    <label for="username">Username:</label>
+    <input type="text" th:field="*{username}" id="username"><br/><br/>
+
+    <label for="password">Password:</label>
+    <input type="password" th:field="*{password}" id="password"><br/><br/>
+
+    <label for="birthDay">Birthday:</label>
+    <input type="date" th:field="*{birthDay}" id="birthDay"><br/>
 
     <button type="submit">Become a client</button>
 </form>

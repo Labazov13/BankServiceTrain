@@ -8,17 +8,15 @@
 <h1>Edit account <span th:text="${email}"></span></h1>
 
 <h1>Enter new data:</h1>
-<h2>Phone: </h2><p th:text="${phone}"></p>
-<h2>Email: </h2><p th:text="${email}"></p>
+<h2>Phone: </h2>
+<p th:text="${phone}"></p>
+<h2>Email: </h2>
+<p th:text="${email}"></p>
 
-<form action="/edit" method="post">
-    Enter new phone: <input
-    type="text"
-    name="phone"><br />
-    Enter new email: <input
-        type="text"
-        name="email"><br />
-    <button type="submit">Save</button>
+<form th:action="@{/edit}" method="post">
+    Enter new phone: <input type="text" name="phone"><br/>
+    Enter new email: <input type="text" name="email"><br/>
+    <input type="submit" value="Save"/>
 </form>
 <p th:text="${message}"></p>
 </body>

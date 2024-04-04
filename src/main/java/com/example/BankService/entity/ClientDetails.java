@@ -1,24 +1,24 @@
 package com.example.BankService.entity;
 
 import com.example.BankService.model.Client;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import javax.persistence.*;
 
-@Entity
+
+@Getter
+@Setter
 @Table(name = "clients_details")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ClientDetails {
+@Entity
+public class ClientDetails{
+    @Column(name = "id")
     @Id
-    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ID;
+    private Long ID;
     @Embedded
     private Client client;
-
 }

@@ -2,43 +2,32 @@ package com.example.BankService.controller;
 
 import com.example.BankService.dao.ClientDAOImpl;
 import com.example.BankService.entity.ClientDetails;
-import com.example.BankService.service.LoginManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HomeController {
-    private final LoginManagerService loginManagerService;
     private final ClientDAOImpl clientDAOImpl;
     @Autowired
-    public HomeController(LoginManagerService loginManagerService, ClientDAOImpl clientDAOImpl) {
-        this.loginManagerService = loginManagerService;
+    public HomeController(ClientDAOImpl clientDAOImpl) {
         this.clientDAOImpl = clientDAOImpl;
     }
 
     @GetMapping("/home")
-    public String home(Model model, @RequestParam(required = false) String Logout){
-        if(loginManagerService.getID() == 0){
-            return "redirect:/";
-        }
-        if (Logout != null){
-            loginManagerService.setEmail(null);
-        }
-        long ID = loginManagerService.getID();
-        String email = loginManagerService.getEmail();
-        ClientDetails searchClient = clientDAOImpl.getClientDetailsById(ID);
-        String firstName = searchClient.getClient().getFirstName();
-        String lastName = searchClient.getClient().getLastName();
-        String id = String.valueOf(searchClient.getClient().getBankAccount().getId());
-        String balance = String.valueOf(searchClient.getClient().getBankAccount().getAccountBalance());
-        model.addAttribute("email", email);
-        model.addAttribute("firstName", firstName);
-        model.addAttribute("lastName", lastName);
-        model.addAttribute("id", id);
-        model.addAttribute("balance", balance);
-        return "home.html";
+    public String home(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        ClientDetails clientDetails = clientDAOImpl.findByUsername(username);
+        model.addAttribute("email", clientDetails.getClient().getEmail());
+        model.addAttribute("username", clientDetails.getClient().getUsername());
+        model.addAttribute("firstName", clientDetails.getClient().getFirstName());
+        model.addAttribute("lastName", clientDetails.getClient().getLastName());
+        model.addAttribute("id", clientDetails.getClient().getBankAccount().getId());
+        model.addAttribute("balance", clientDetails.getClient().getBankAccount().getAccountBalance());
+        return "home";
     }
 }

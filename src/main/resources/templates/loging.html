@@ -5,20 +5,26 @@
     <title>Login</title>
 </head>
 <body>
+<table>
 <tr th:each="client: ${clients}" >
     <td th:text="${client.client.firstName}" ></td><br />
     <td th:text="${client.client.lastName}" ></td><br />
     <td th:text="${client.client.fatherName}"></td><br />
     <td th:text="${client.client.phone}"></td><br />
     <td th:text="${client.client.email}"></td><br />
-    <td th:text="${client.client.birthDay}"></td><br /><br /><br />
+    <td th:text="${client.client.birthDay}"></td><br />
 </tr>
-
-<form action="/" method="post">
-    Enter email: <input type="text" name="email" /><br />
-    <button type="submit">Log in</button>
+</table>
+<form th:action="@{/loging}" method="post">
+    <label for="username">Username: </label>
+    <input type="text" name="username" id="username" /><br/>
+    <label for="password">Password: </label>
+    <input type="password" name="password" id="password" /><br/>
+    <input type="submit" value="Login"/>
 </form>
+
+
 <p th:text="${message}"></p>
-<a href="/register">Register</a>
+<a th:href="@{/register}">Register</a>
 </body>
 </html>

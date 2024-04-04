@@ -31,7 +31,7 @@ public class BankController {
             return "redirect:/";
         }
         model.addAttribute("email", email);
-        return "withdraw.html";
+        return "withdraw";
     }
 
     @PostMapping("/withdraw")
@@ -48,7 +48,7 @@ public class BankController {
         }
         else {
             model.addAttribute("message", "Insufficient funds");
-            return "withdraw.html";
+            return "withdraw";
         }
     }
 
