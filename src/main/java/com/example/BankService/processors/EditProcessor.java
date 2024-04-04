@@ -2,7 +2,6 @@ package com.example.BankService.processors;
 
 import com.example.BankService.dao.ClientDAOImpl;
 import com.example.BankService.entity.ClientDetails;
-import com.example.BankService.service.LoginManagerService;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;

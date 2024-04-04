@@ -17,8 +17,6 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     @Autowired
     private ClientDAOImpl clientDAO;
-                                //СЕГОДНЯ ЗАНИМАЕШЬСЯ НАСТРОЙКОЙ ИЗМЕНЕНИЯ ПДАННЫХ ПОЛЬЗОВАТЕЛЯ!!!
-
 
     @Bean
     public PasswordEncoder passwordEncoder(){

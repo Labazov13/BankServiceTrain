@@ -3,7 +3,6 @@ package com.example.BankService.controller;
 import com.example.BankService.dao.ClientDAOImpl;
 import com.example.BankService.entity.ClientDetails;
 import com.example.BankService.processors.EditProcessor;
-import com.example.BankService.service.LoginManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
