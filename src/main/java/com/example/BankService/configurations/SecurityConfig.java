@@ -32,7 +32,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((autorize) -> autorize
                         .requestMatchers("/edit", "/withdraw", "/transfer", "/home").authenticated()
-                        .requestMatchers("/", "/loging").permitAll())
+                        .requestMatchers("/", "/loging", "/register").permitAll())
                 .formLogin(form -> form.loginPage("/loging")
                         .defaultSuccessUrl("/home")).logout(logout -> logout.logoutSuccessUrl("/loging"));
         return http.build();

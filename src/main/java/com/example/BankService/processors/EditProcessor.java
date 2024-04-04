@@ -18,19 +18,15 @@ public class EditProcessor {
 
     public boolean editUser(ClientDetails client, String phone, String email){
         var clients = clientDAOImpl.getAllClientDetails();
-        if (phone == null){
-            client.getClient().setPhone(client.getClient().getPhone());
-        }
-        if (email == null){
-            client.getClient().setEmail(client.getClient().getEmail());
-        }
         for (ClientDetails clientDetails : clients){
             if (clientDetails.getClient().getPhone().equals(phone) || clientDetails.getClient().getEmail().equals(email)){
                 return false;
             }
         }
-        client.getClient().setPhone(phone);
-        client.getClient().setEmail(email);
+        String setPhone = phone.isEmpty() ? client.getClient().getPhone() : phone;
+        String setEmail = email.isEmpty() ? client.getClient().getEmail() : email;
+        client.getClient().setPhone(setPhone);
+        client.getClient().setEmail(setEmail);
         clientDAOImpl.updateClient(client);
         return true;
     }
