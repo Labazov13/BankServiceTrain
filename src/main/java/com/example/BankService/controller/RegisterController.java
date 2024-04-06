@@ -5,10 +5,12 @@ import com.example.BankService.entity.ClientDetails;
 import com.example.BankService.model.BankAccount;
 import com.example.BankService.model.Client;
 import com.example.BankService.service.BankAccountService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -32,16 +34,19 @@ public class RegisterController {
     }
 
     @PostMapping
-    public String newRegister(@ModelAttribute("client") Client client, Model model) {
-            client.setPassword(passwordEncoder.encode(client.getPassword()));
-            client.setRoles("ROLE_USER");
-            BankAccount bankAccount = bankAccountService.createBankAccount();
-            client.setBankAccount(bankAccount);
-            ClientDetails clientDetails = new ClientDetails();
-            clientDetails.setClient(client);
-            clientDAOImpl.addClientDetails(clientDetails);
-            var clients = clientDAOImpl.getAllClientDetails();
-            model.addAttribute("clients", clients);
-            return "redirect:/loging";
+    public String newRegister(@Valid @ModelAttribute("client") Client client, Errors errors, Model model) {
+        if (errors.hasErrors()){
+            return "register";
+        }
+        client.setPassword(passwordEncoder.encode(client.getPassword()));
+        client.setRoles("ROLE_USER");
+        BankAccount bankAccount = bankAccountService.createBankAccount();
+        client.setBankAccount(bankAccount);
+        ClientDetails clientDetails = new ClientDetails();
+        clientDetails.setClient(client);
+        clientDAOImpl.addClientDetails(clientDetails);
+        var clients = clientDAOImpl.getAllClientDetails();
+        model.addAttribute("clients", clients);
+        return "redirect:/loging";
     }
 }

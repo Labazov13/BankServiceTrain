@@ -10,14 +10,10 @@
 <h1>Your balance: <p th:text="${balance}">Balance</p></h1>
 
 <h2>Enter the amount to transfer:</h2>
-<form action="/transfer" method="post">
-    Amount: <input
-        type="number"
-        name="amount"><br />
-    To account: <input
-        type="text"
-        name="toEmail"><br />
-    <button type="submit">Transfer</button>
+<form th:action="@{/transfer}" method="post">
+    Amount: <input type="number" name="amount"><br />
+    To account: <input type="text" name="toEmail"><br />
+    <input type="submit" value="Transfer">
 </form>
 <p th:text="${message}"></p>
 </body>

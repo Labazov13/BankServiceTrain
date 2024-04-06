@@ -11,27 +11,48 @@
 
     <label for="firstName">Firstname:</label>
     <input type="text" th:field="*{firstName}" id="firstName"><br/><br/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('birthDay')}"
+          th:errors="*{birthDay}">Field not can be empty</span>
 
     <label for="lastName">Lastname:</label>
     <input type="text" th:field="*{lastName}" id="lastName"><br/><br/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('lastName')}"
+          th:errors="*{lastName}">Field not can be empty</span>
 
     <label for="fatherName">Fathername:</label>
     <input type="text" th:field="*{fatherName}" id="fatherName"><br/><br/>
 
     <label for="phone">Phone:</label>
     <input type="text" th:field="*{phone}" id="phone"><br/><br/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('phone')}"
+          th:errors="*{phone}">Field not can be empty</span>
 
     <label for="email">Email:</label>
     <input type="text" th:field="*{email}" id="email"><br/><br/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('email')}"
+          th:errors="*{email}">Field not can be empty</span>
 
     <label for="username">Username:</label>
     <input type="text" th:field="*{username}" id="username"><br/><br/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('username')}"
+          th:errors="*{username}">Field not can be empty</span>
 
     <label for="password">Password:</label>
     <input type="password" th:field="*{password}" id="password"><br/><br/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('password')}"
+          th:errors="*{password}">Field not can be empty</span>
 
     <label for="birthDay">Birthday:</label>
     <input type="date" th:field="*{birthDay}" id="birthDay"><br/>
+    <span class="validationError"
+          th:if="${#fields.hasErrors('birthDay')}"
+          th:errors="*{birthDay}">Incorrect input date</span>
 
     <button type="submit">Become a client</button>
 </form>

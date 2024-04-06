@@ -10,11 +10,9 @@
 <h1>Your balance:</h1>
 <p th:text="${balance}">Balance</p>
 <h2>Enter the amount to withdraw:</h2>
-<form action="/withdraw" method="post">
-    Amount: <input
-        type="number"
-        name="amount"><br />
-    <button type="submit">Withdraw</button>
+<form th:action="@{/withdraw}" method="post">
+    Amount: <input type="number" name="amount"><br/>
+    <input type="submit" value="Withdraw"/>
 </form>
 <p th:text="${message}"></p>
 

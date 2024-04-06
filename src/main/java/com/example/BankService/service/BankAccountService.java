@@ -15,26 +15,25 @@ import java.util.Random;
 @Data
 public class BankAccountService {
     private BankAccount bankAccount;
-    private List<BankAccount> bankAccounts;
+
     @Autowired
     private ClientService clientService;
     @Autowired
     private ClientDAOImpl clientDAOImpl;
 
+    private Random random = new Random();
+
 
     public BankAccount createBankAccount(){
-        Random random = new Random();
+
         long id = random.nextLong(0, 146240000);
         float initialAmount = random.nextFloat(0, 70000);
         float amount = initialAmount;
         return new BankAccount(id, initialAmount, amount);
     }
-    public List<BankAccount> findAll(){
-        return bankAccounts;
-    }
 
-    @Scheduled(initialDelay = 600000000, fixedDelay = 60000000)
-    public void accrualPercent() throws InterruptedException {
+    @Scheduled(initialDelay = 60000, fixedDelay = 60000)
+    public void accrualPercent() {
         List<ClientDetails> clientDetails = clientDAOImpl.getAllClientDetails();
         for (ClientDetails client : clientDetails){
             float currentBalance = client.getClient().getBankAccount().getAccountBalance();
@@ -45,5 +44,4 @@ public class BankAccountService {
             }
         }
     }
-
 }

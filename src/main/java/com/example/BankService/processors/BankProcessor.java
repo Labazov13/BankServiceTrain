@@ -14,29 +14,22 @@ public class BankProcessor {
         this.clientDAOImpl = clientDAOImpl;
     }
 
-    public boolean withdraw(String email, float amount){
-        var clients = clientDAOImpl.getAllClientDetails();
-        for (ClientDetails client : clients){
-            if (client.getClient().getEmail().equals(email)){
-                if (client.getClient().getBankAccount().getAccountBalance() >= amount){
-                    client.getClient().getBankAccount()
-                            .setAccountBalance(client.getClient().getBankAccount().getAccountBalance() - amount);
-                    client.getClient().getBankAccount()
-                            .setInitialBalance(client.getClient().getBankAccount().getInitialBalance() - amount);
-                    clientDAOImpl.updateClient(client);
-                }
-                return true;
-            }
+    public boolean withdraw(ClientDetails clientDetails, float amount) {
+        if (clientDetails.getClient().getBankAccount().getAccountBalance() >= amount) {
+            clientDetails.getClient().getBankAccount()
+                    .setAccountBalance(clientDetails.getClient().getBankAccount().getAccountBalance() - amount);
+            clientDetails.getClient().getBankAccount()
+                    .setInitialBalance(clientDetails.getClient().getBankAccount().getInitialBalance() - amount);
+            clientDAOImpl.updateClient(clientDetails);
+            return true;
         }
         return false;
     }
 
-    public boolean transfer(String fromEmail, String toEmail, float amount){
-        ClientDetails fromClient = clientDAOImpl.getClientDetailsByEmail(fromEmail);
-        ClientDetails toClient = clientDAOImpl.getClientDetailsByEmail(toEmail);
+    public boolean transfer(ClientDetails fromClient, ClientDetails toClient, float amount) {
         float fromBalance = fromClient.getClient().getBankAccount().getAccountBalance();
         float toBalance = toClient.getClient().getBankAccount().getAccountBalance();
-        if (fromBalance >= amount){
+        if (fromBalance >= amount) {
             fromClient.getClient().getBankAccount().setAccountBalance(fromBalance - amount);
             toClient.getClient().getBankAccount().setAccountBalance(toBalance + amount);
             clientDAOImpl.updateClient(fromClient);
